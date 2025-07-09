@@ -87,7 +87,6 @@ class HanoiGame:
                 color = self.disk_colors[(disk_size - 1) % len(self.disk_colors)]
                 pygame.draw.rect(self.screen, color, (x, y, width, height), border_radius=6)
 
-        # Affichage du disque "en main"
         if self.holding_disk is not None:
             width = 40 + self.holding_disk * 15
             height = self.disk_height
@@ -113,22 +112,51 @@ class HanoiGame:
         if self.holding_disk is None:
             if peg:
                 self.holding_disk = peg.pop()
-                if self.move_sound: self.move_sound.play()
+                if self.move_sound:
+                    self.move_sound.play()
         else:
             if not peg or peg[-1] > self.holding_disk:
                 peg.append(self.holding_disk)
-                self.holding_disk = None
-                if self.move_sound: self.move_sound.play()
+                if self.move_sound:
+                    self.move_sound.play()
+                self.holding_disk = None 
 
     def reset(self):
         self.init_disks()
         self.holding_disk = None
         self.selected_peg = 0
 
+
+    def check_victory(self):
+        if self.holding_disk is not None:
+            return  # On ne vérifie la victoire que si aucun disque n'est en main
+        
+        # Peg de victoire = la dernière de la liste
+        target_peg = self.pegs[-1]
+        expected = list(range(self.disks, 0, -1))
+
+        # Les autres pegs doivent être vides
+        other_pegs_empty = all(peg == [] for peg in self.pegs[:-1])
+
+        if target_peg == expected and other_pegs_empty:
+            self.display_victory_message()
+
+    def display_victory_message(self):
+        font = pygame.font.SysFont(None, 48)
+        text = font.render("Victoire !", True, (0, 255, 0))
+        text_rect = text.get_rect(center=(self.screen_width // 2, self.screen_height))
+
+        self.screen.blit(text, text_rect)
+        pygame.display.flip()
+        pygame.time.wait(3000)
+        self.running = False
+
+
     def run(self):
         while self.running:
             self.clock.tick(60)
             self.draw()
+            self.check_victory() 
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:

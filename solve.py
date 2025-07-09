@@ -1,4 +1,4 @@
-#Algorithme récursif de résolution
+# Algorithme récursif de résolution
 
 class HanoiSolver:
     def __init__(self, disks: int, pegs: int = 3):
