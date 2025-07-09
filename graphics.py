@@ -33,7 +33,7 @@ class HanoiGame:
         self.holding_disk = None   # disque en cours de déplacement
 
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
-        pygame.display.set_caption("Tour de Hanoï - Mode Manuel")
+        pygame.display.set_caption("Tour de Hanoï")
 
         self.clock = pygame.time.Clock()
         self.running = True
@@ -43,6 +43,24 @@ class HanoiGame:
         except pygame.error:
             self.move_sound = None
             print("⚠️ move.mp3 introuvable, pas de son.")
+
+        
+        self.solve_button_rect = pygame.Rect(self.screen_width - 120, 20, 100, 40)
+        self.quit_button_rect = pygame.Rect(self.screen_width - 120, 70, 100, 40)
+
+    def draw_solve_button(self):
+        pygame.draw.rect(self.screen, (70, 130, 180), self.solve_button_rect, border_radius=8)
+        font = pygame.font.SysFont(None, 24)
+        text = font.render("Solve", True, (255, 255, 255))
+        text_rect = text.get_rect(center=self.solve_button_rect.center)
+        self.screen.blit(text, text_rect)
+    
+    def draw_quit_button(self):
+        pygame.draw.rect(self.screen, (180, 70, 70), self.quit_button_rect, border_radius=8)
+        font = pygame.font.SysFont(None, 24)
+        text = font.render("Quit", True, (255, 255, 255))
+        text_rect = text.get_rect(center=self.quit_button_rect.center)
+        self.screen.blit(text, text_rect)
 
     def init_disks(self):
         self.pegs = [[], [], []]
@@ -83,6 +101,8 @@ class HanoiGame:
         self.screen.fill((30, 30, 30))
         self.draw_table_and_pegs()
         self.draw_disks()
+        self.draw_solve_button()
+        self.draw_quit_button()
         pygame.display.flip()
 
     def move_selection(self, direction):
@@ -123,5 +143,12 @@ class HanoiGame:
                         self.handle_enter()
                     elif event.key == pygame.K_r:
                         self.reset()
+                
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    if self.solve_button_rect.collidepoint(event.pos):
+                        print("Solve button clicked (fonction à implémenter)")
+                    elif self.quit_button_rect.collidepoint(event.pos):
+                        self.running = False
+
 
         pygame.quit()
