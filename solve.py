@@ -10,11 +10,17 @@ class HanoiSolver:
         if self.pegs != 3:
             raise NotImplementedError("La version avec plus de 3 tiges n’est pas encore implémentée.")
         self._hanoi(self.disks, 1, 3, 2)
+        print('Début de la résolution')
+        print(self.moves)
         return self.moves
 
     def _hanoi(self, n, source, target, auxiliary):
         if n == 1:
             self.moves.append((source, target))
+            print('Dernier disque')
+            print(f"Nombre de mouvements: {len(self.moves)}")
+            print(f"Nombre de disques: {self.disks}")
+            print(f"Nombre de tiges: {self.pegs}")
         else:
             self._hanoi(n-1, source, auxiliary, target)
             self.moves.append((source, target))

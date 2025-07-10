@@ -1,5 +1,6 @@
 # graphics.py
-
+import time
+from turtle import screensize
 import pygame
 from solve import HanoiSolver
 
@@ -11,6 +12,7 @@ class HanoiGame:
         self.disks = disks
         self.pegs = [[], [], []]
         self.init_disks()
+        self.hanoi_solver = HanoiSolver(disks)
 
         self.screen_width = 800
         self.screen_height = 600
@@ -107,15 +109,34 @@ class HanoiGame:
     def move_selection(self, direction):
         self.selected_peg = (self.selected_peg + direction) % 3
 
-    def handle_enter(self):
+    def move_solve(self, origin, target):
+        self.selected_peg = origin - 1
         peg = self.pegs[self.selected_peg]
         if self.holding_disk is None:
             if peg:
                 self.holding_disk = peg.pop()
                 if self.move_sound:
                     self.move_sound.play()
-        else:
-            if not peg or peg[-1] > self.holding_disk:
+                    time.sleep(0.5)  # Pause pour visualiser le mouvement
+                    self.draw()
+                    self.selected_peg = target - 1
+                    self.move_sound.play()
+                    time.sleep(0.5)  # Pause pour visualiser le mouvement
+                    self.draw()
+                    peg = self.pegs[self.selected_peg]
+                    peg.append(self.holding_disk)
+                self.holding_disk = None
+
+    def handle_enter(self):
+        peg = self.pegs[self.selected_peg]
+        
+        if self.holding_disk is None: #Aucun disque séléctionné
+            if peg:
+                self.holding_disk = peg.pop()
+                if self.move_sound:
+                    self.move_sound.play()
+        else: #Disque séléctionné
+            if not peg or peg[-1] > self.holding_disk: 
                 peg.append(self.holding_disk)
                 if self.move_sound:
                     self.move_sound.play()
@@ -140,6 +161,7 @@ class HanoiGame:
 
         if target_peg == expected and other_pegs_empty:
             self.display_victory_message()
+            self.hanoi_solver.moves.clear()
 
     def display_victory_message(self):
         font = pygame.font.SysFont(None, 48)
@@ -149,7 +171,7 @@ class HanoiGame:
         self.screen.blit(text, text_rect)
         pygame.display.flip()
         pygame.time.wait(3000)
-        self.running = False
+        self.reset()
 
 
     def run(self):
@@ -174,7 +196,8 @@ class HanoiGame:
                 
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if self.solve_button_rect.collidepoint(event.pos):
-                        print("Solve button clicked (fonction à implémenter)")
+                        for origin, target in self.hanoi_solver.solve():
+                            self.move_solve(origin,target)
                     elif self.quit_button_rect.collidepoint(event.pos):
                         self.running = False
 
