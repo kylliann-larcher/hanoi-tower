@@ -4,14 +4,14 @@ import pygame
 from solve import HanoiSolver
 
 class HanoiGame:
-    def __init__(self, disks):
+    def __init__(self, pegs, disks):
         pygame.init()
         pygame.mixer.init()
 
         self.disks = disks
-        self.pegs = [[], [], []]
+        self.pegs = [[] for _ in range(pegs)]
         self.init_disks()
-        self.hanoi_solver = HanoiSolver(disks)
+        self.hanoi_solver = HanoiSolver(self.pegs, self.disks)
 
         self.screen_width = 800
         self.screen_height = 600
@@ -19,9 +19,8 @@ class HanoiGame:
         self.peg_width = 10
 
         self.peg_positions = [
-            self.screen_width // 4,
-            self.screen_width // 2,
-            3 * self.screen_width // 4
+        (i + 1) * self.screen_width // (pegs + 1)
+        for i in range(pegs)
         ]
 
         self.disk_colors = [
@@ -64,7 +63,6 @@ class HanoiGame:
         self.screen.blit(text, text_rect)
 
     def init_disks(self):
-        self.pegs = [[], [], []]
         for i in range(self.disks, 0, -1):
             self.pegs[0].append(i)
 

@@ -54,8 +54,7 @@ def display_menu():
                     else:
                         pegs_text += event.unicode
 
-            elif event.type == pygame.KEYDOWN:
-                if disk_mode and create_mode:
+                elif disk_mode and create_mode:
                     if event.key == pygame.K_RETURN and pegs_text.strip() and disks_text.strip():
                         disks = int(disks_text.strip())
                         pegs = int(pegs_text.strip())
@@ -71,18 +70,17 @@ def display_menu():
                     peg_mode = True
                     disk_mode = False
 
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                if disks_box.collidepoint(event.pos):
+                elif disks_box.collidepoint(event.pos):
                     create_mode = True
                     peg_mode = False
                     disk_mode = True
 
-            elif play_button.collidepoint(event.pos):
-                if pegs_text.strip() and disks_text.strip():
-                    pegs = int(pegs_text.strip())
-                    disks = int(disks_text.strip())
-                    selected_gamemode = (pegs, disks)
-                    running = False
+                elif play_button.collidepoint(event.pos):
+                    if pegs_text.strip() and disks_text.strip():
+                        pegs = int(pegs_text.strip())
+                        disks = int(disks_text.strip())
+                        selected_gamemode = (pegs, disks)
+                        running = False
 
         pygame.display.flip()
 
