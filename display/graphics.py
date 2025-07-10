@@ -1,6 +1,5 @@
 # graphics.py
 import time
-from turtle import screensize
 import pygame
 from solve import HanoiSolver
 
