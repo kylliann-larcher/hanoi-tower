@@ -13,8 +13,8 @@ class HanoiGame:
         self.init_disks()
         self.hanoi_solver = HanoiSolver(self.pegs, self.disks)
 
-        self.screen_width = 800
-        self.screen_height = 600
+        self.screen_width = 1000
+        self.screen_height = 700
         self.disk_height = 20
         self.peg_width = 10
 
@@ -33,7 +33,7 @@ class HanoiGame:
         self.holding_disk = None   # disque en cours de déplacement
 
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
-        pygame.display.set_caption("Tour de Hanoï")
+        pygame.display.set_caption("Jeu - Tour de Hanoï")
 
         self.clock = pygame.time.Clock()
         self.running = True
@@ -158,12 +158,12 @@ class HanoiGame:
 
         if target_peg == expected and other_pegs_empty:
             self.display_victory_message()
-            self.hanoi_solver.moves.clear()
+            self.running = False
 
     def display_victory_message(self):
-        font = pygame.font.SysFont(None, 48)
+        font = pygame.font.SysFont(None, 56)
         text = font.render("Victoire !", True, (0, 255, 0))
-        text_rect = text.get_rect(center=(self.screen_width // 2, self.screen_height))
+        text_rect = text.get_rect(center=(self.screen_width // 2, self.screen_height // 2))
 
         self.screen.blit(text, text_rect)
         pygame.display.flip()

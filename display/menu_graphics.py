@@ -5,8 +5,8 @@ def display_menu():
     screen = pygame.display.set_mode((600, 400))
     pygame.display.set_caption("Choix des pics et disques - Tour de Hanoï")
     font = pygame.font.Font(None, 36)
+    label_font = pygame.font.Font(None, 28)
 
-    
     pegs_text = ""
     disks_text = ""
     selected_gamemode = None
@@ -16,7 +16,7 @@ def display_menu():
 
     pegs_box = pygame.Rect(200, 100, 200, 40)
     disks_box = pygame.Rect(200, 200, 200, 40)
-    play_button = pygame.Rect(100, 300, 150, 45)
+    play_button = pygame.Rect((600 - 150) // 2, 300, 150, 45)  # centré horizontalement
 
     running = True
     while running:
@@ -25,14 +25,25 @@ def display_menu():
         title = font.render("Sélection ou création de joueur", True, (255, 255, 255))
         screen.blit(title, (100, 30))
 
+        # Boîte pegs
         pygame.draw.rect(screen, (255, 255, 255), pegs_box, 2)
         input_surface_1 = font.render(pegs_text, True, (255, 255, 255))
         screen.blit(input_surface_1, (pegs_box.x + 10, pegs_box.y + 5))
 
+        # Label "pegs"
+        pegs_label = label_font.render("pegs", True, (200, 200, 200))
+        screen.blit(pegs_label, (pegs_box.x - 60, pegs_box.y + 8))
+
+        # Boîte disks
         pygame.draw.rect(screen, (255, 255, 255), disks_box, 2)
         input_surface_2 = font.render(disks_text, True, (255, 255, 255))
         screen.blit(input_surface_2, (disks_box.x + 10, disks_box.y + 5))
 
+        # Label "disk"
+        disks_label = label_font.render("disk", True, (200, 200, 200))
+        screen.blit(disks_label, (disks_box.x - 60, disks_box.y + 8))
+
+        # Bouton Jouer
         pygame.draw.rect(screen, (0, 128, 0), play_button)
         screen.blit(font.render("Jouer", True, (255, 255, 255)), (play_button.x + 30, play_button.y + 10))
 
@@ -81,7 +92,5 @@ def display_menu():
                         disks = int(disks_text.strip())
                         selected_gamemode = (pegs, disks)
                         running = False
-
-        pygame.display.flip()
 
     return selected_gamemode
