@@ -40,6 +40,8 @@ class HanoiGame:
 
         try:
             self.move_sound = pygame.mixer.Sound("assets/move.mp3")
+            self.music_sound = pygame.mixer.Sound("assets/music_vn.mp3")
+            self.music_sound.play(-1)
         except pygame.error:
             self.move_sound = None
             print("⚠️ move.mp3 introuvable, pas de son.")
