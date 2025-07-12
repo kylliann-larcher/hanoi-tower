@@ -1,4 +1,3 @@
-# graphics.py
 import time
 import pygame
 from solve import HanoiSolver
@@ -29,8 +28,8 @@ class HanoiGame:
             (128, 0, 128), (255, 192, 203), (160, 82, 45)
         ]
 
-        self.selected_peg = 0      # pique sélectionnée
-        self.holding_disk = None   # disque en cours de déplacement
+        self.selected_peg = 0
+        self.holding_disk = None  
 
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
         pygame.display.set_caption("Jeu - Tour de Hanoï")
@@ -69,10 +68,9 @@ class HanoiGame:
             self.pegs[0].append(i)
 
     def draw_table_and_pegs(self):
-        # Table
+
         pygame.draw.rect(self.screen, (100, 50, 20), (0, self.screen_height - 40, self.screen_width, 40))
 
-        # Piques
         for i, x in enumerate(self.peg_positions):
             color = (255, 255, 0) if i == self.selected_peg else (200, 200, 200)
             pygame.draw.rect(self.screen, color, (x - self.peg_width // 2, 200, self.peg_width, 200))
@@ -116,11 +114,11 @@ class HanoiGame:
                 self.holding_disk = peg.pop()
                 if self.move_sound:
                     self.move_sound.play()
-                    time.sleep(0.5)  # Pause pour visualiser le mouvement
+                    time.sleep(0.5)  
                     self.draw()
                     self.selected_peg = target - 1
                     self.move_sound.play()
-                    time.sleep(0.5)  # Pause pour visualiser le mouvement
+                    time.sleep(0.5)  
                     self.draw()
                     peg = self.pegs[self.selected_peg]
                     peg.append(self.holding_disk)
@@ -129,12 +127,12 @@ class HanoiGame:
     def handle_enter(self):
         peg = self.pegs[self.selected_peg]
         
-        if self.holding_disk is None: #Aucun disque séléctionné
+        if self.holding_disk is None: 
             if peg:
                 self.holding_disk = peg.pop()
                 if self.move_sound:
                     self.move_sound.play()
-        else: #Disque séléctionné
+        else: 
             if not peg or peg[-1] > self.holding_disk: 
                 peg.append(self.holding_disk)
                 if self.move_sound:
@@ -149,13 +147,11 @@ class HanoiGame:
 
     def check_victory(self):
         if self.holding_disk is not None:
-            return  # On ne vérifie la victoire que si aucun disque n'est en main
+            return  
         
-        # Peg de victoire = la dernière de la liste
         target_peg = self.pegs[-1]
         expected = list(range(self.disks, 0, -1))
 
-        # Les autres pegs doivent être vides
         other_pegs_empty = all(peg == [] for peg in self.pegs[:-1])
 
         if target_peg == expected and other_pegs_empty:

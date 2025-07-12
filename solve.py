@@ -1,5 +1,3 @@
-# Algorithme récursif de résolution
-
 import re
 
 
